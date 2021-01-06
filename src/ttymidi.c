@@ -495,7 +495,7 @@ void* read_midi_from_serial_port(void* seq)
 					i = 3;
 				} else {
 					/* Lets figure out are we done or should we read one more byte. */
-					if ((buf[0] & 0xF0) == 0xC0 || (buf[0] & 0xF0) == 0xD0 {
+					if ((buf[0] & 0xF0) == 0xC0 || (buf[0] & 0xF0) == 0xD0) {
 						i = 3;
 					} else {
 						i = 2;
