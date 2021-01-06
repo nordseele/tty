@@ -13,6 +13,7 @@ ____
 ttyMIDI is a GPL-licensed program that allows external serial devices to 
 interface with the ALSA sequencer.
 
+Authors: Thiago Teixeira (Original developer and maintainer) + Jari Suominen
 
 #### Compilation
 
