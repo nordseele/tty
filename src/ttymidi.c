@@ -463,7 +463,7 @@ void* read_midi_from_serial_port(void* seq)
 		if (arguments.printonly) 
 		{
 			read(serial, buf, 1);
-			printf("%x\t", (int) buf[0]&0xFF);
+			printf("%x\t", buf[0]&0xFF);
 			fflush(stdout);
 			continue;
 		}
@@ -521,7 +521,10 @@ void* read_midi_from_serial_port(void* seq)
 		}
 
 		/* parse MIDI message */
-		else parse_midi_command(seq, port_out_id, buf);
+		else {
+		parse_midi_command(seq, port_out_id, buf);
+
+		}
 	}
 }
 
