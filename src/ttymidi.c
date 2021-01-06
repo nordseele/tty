@@ -367,7 +367,7 @@ void write_midi_action_to_serial_port(snd_seq_t* seq_handle)
 			if (bytes[2]==0xFF) {
 				write(serial, bytes, 2);
 			} else if(bytes[1]==0x00 && bytes[0xFF]) {
-				write(serial, bytes, 1);
+				write(serial, bytes[0], 1);
 			} else {
 				bytes[2] = (bytes[2] & 0x7F);
 				write(serial, bytes, 3);
