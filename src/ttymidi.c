@@ -458,7 +458,7 @@ void* read_midi_from_serial_port(void* seq)
 			read(serial, buf+i, 1);
 
 			if (buf[i] >> 7 != 0) {
-				/* Status byte received and will always be first bit!*/
+				/* Status byte received */
 				buf[0] = buf[i];
 				i = 1;
 	
@@ -466,12 +466,10 @@ void* read_midi_from_serial_port(void* seq)
 			else {
 				/* Data byte received */
 				if (i == 2) {
-					/* It was 2nd data byte so we have a MIDI event
-					   process! */
 					i = 3;
 				} else {
-					/* Lets figure out are we done or should we read one more byte. */
-					if ((buf[0] & 0xF0) == 0xC0 || (buf[0] & 0xF0) == 0xD0) {
+					/* More bytes? */
+					if ((buf[0] & 0xF0) == 0xC0 || (buf[0] & 0xF0) == 0xD0) || (buf[0] & 0xF0) == 0xFA) { // pgm change and ch pressure
 						i = 3;
 					} else {
 						i = 2;
