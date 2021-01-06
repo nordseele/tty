@@ -480,6 +480,9 @@ void* read_midi_from_serial_port(void* seq)
 			if (buf[i] >> 7 != 0) {
 				/* Status byte received and will always be first bit!*/
 				buf[0] = buf[i];
+					if (buf[0] == 0xFA) {
+			printf("start");
+		}
 				// printf("%x\t", buf[i]);
 				i = 1;
 	
@@ -502,9 +505,7 @@ void* read_midi_from_serial_port(void* seq)
 
 		}
 
-		if (buf[0] == 0xFA) {
-			printf("start");
-		}
+	
 
 		/* print comment message (the ones that start with 0xFF 0x00 0x00 */
 		if (buf[0] == (char) 0xFF && buf[1] == (char) 0x00 && buf[2] == (char) 0x00)
