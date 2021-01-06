@@ -5,7 +5,7 @@ Starting in verbose mode :
 
 `ttymidi -s /dev/ttyAMA0 -b 38400 -v`
 
-*Wip : MIDI Beatclock commands (Clock, start, stop, continue)* 
+*Wip : Trying to add MIDI Beatclock commands (Clock, start, stop, continue)* 
 
 
 ____
