@@ -259,6 +259,24 @@ void parse_midi_command(snd_seq_t* seq, int port_out_id, char *buf)
 			snd_seq_ev_set_queue_start(&ev, 0);
 			break;
 
+		case 0xF8:
+			if (!arguments.silent && arguments.verbose) 
+				printf("Serial  0xF8 Clock    \n");
+			snd_seq_ev_set_queue_pos_tick(&ev, 0, 0); // probably not good at all
+			break;
+
+		case 0xFC:
+			if (!arguments.silent && arguments.verbose) 
+				printf("Serial  0xFC Stop    \n");
+			snd_seq_ev_set_queue_stop(&ev, 0);
+			break;
+
+		case 0xFB:
+			if (!arguments.silent && arguments.verbose) 
+				printf("Serial  0xFC Continue    \n");
+			snd_seq_ev_set_queue_continue(&ev, 0);
+			break;
+
 		case 0xD0:
 			if (!arguments.silent && arguments.verbose) 
 				printf("Serial  0x%x Channel change     %03u %03u\n", operation, channel, param1);
