@@ -252,10 +252,11 @@ void parse_midi_command(snd_seq_t* seq, int port_out_id, char *buf)
 				printf("Serial  0x%x Program change     %03u %03u\n", operation, channel, param1);
 			snd_seq_ev_set_pgmchange(&ev, channel, param1);
 			break;
+
 		case 0xFA:
 			if (!arguments.silent && arguments.verbose) 
-				printf("Serial  0x%x Clock     %03u\n", operation, param1);
-			snd_seq_ev_set_pgmchange(&ev, channel, param1); /// 
+				printf("Serial  0x%x Start     %03u\n");
+			snd_seq_ev_set_queue_start(&ev, 0);
 			break;
 
 		case 0xD0:
@@ -337,7 +338,7 @@ void write_midi_action_to_serial_port(snd_seq_t* seq_handle)
 				bytes[0] = 0xFA;
 				// bytes[1] = ev->data.control.value;
 				if (!arguments.silent && arguments.verbose) 
-					printf("Alsa    0xFA Clock		\n"); 
+					printf("Alsa    0xFA Start		\n"); 
 				break;  
 
 			case SND_SEQ_EVENT_CHANPRESS: 
