@@ -255,7 +255,7 @@ void parse_midi_command(snd_seq_t* seq, int port_out_id, char *buf)
 		case 0xFA:
 			if (!arguments.silent && arguments.verbose) 
 				printf("Serial  0x%x Start     %03u\n", operation, param1);
-			snd_seq_ev_set_queue_start(&ev, 0); 
+			snd_seq_ev_set_queue_start(&ev, param1); 
 			break;
 
 		case 0xD0:
