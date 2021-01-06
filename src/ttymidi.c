@@ -341,6 +341,24 @@ void write_midi_action_to_serial_port(snd_seq_t* seq_handle)
 					printf("Alsa    0xFA Start		\n"); 
 				break;  
 
+			case SND_SEQ_EVENT_STOP: 
+				bytes[0] = 0xFC;
+				if (!arguments.silent && arguments.verbose) 
+					printf("Alsa    0xFC Stop		\n"); 
+				break;  
+
+			case SND_SEQ_EVENT_CONTINUE: 
+				bytes[0] = 0xFB;
+				if (!arguments.silent && arguments.verbose) 
+					printf("Alsa    0xFB Continue		\n"); 
+				break;  
+
+			case SND_SEQ_EVENT_CLOCK: 
+				bytes[0] = 0xF8;
+				if (!arguments.silent && arguments.verbose) 
+					printf("Alsa    0xF8 Clock		\n"); 
+				break;  
+
 			case SND_SEQ_EVENT_CHANPRESS: 
 				bytes[0] = 0xD0 + ev->data.control.channel;
 				bytes[1] = ev->data.control.value;
@@ -364,7 +382,8 @@ void write_midi_action_to_serial_port(snd_seq_t* seq_handle)
 		if (bytes[0]!=0x00)
 		{
 			bytes[1] = (bytes[1] & 0x7F); // just to be sure that one bit is really zero
-			if(bytes[1]==0x00 && bytes[2]==0xFF) {
+
+			if(bytes[1]==0x00 && bytes[2]==0xFF) { // deal w/ one byte messages (beat clock / transport)
 				write(serial, bytes, 1);
 			} 
 			else if (bytes[2]==0xFF) {
