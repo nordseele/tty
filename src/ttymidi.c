@@ -447,30 +447,10 @@ void* read_midi_from_serial_port(void* seq)
 	char buf[3], msg[MAX_MSG_SIZE];
 	int i, msglen;
 	
-	/* Lets first fast forward to first status byte... */
-	if (!arguments.printonly) {
-		do read(serial, buf, 1);
-		while (buf[0] >> 7 == 0);
-	}
+	do read(serial, buf, 1);
+	while (buf[0] >> 7 == 0);
 
-	while (run) 
-	{
-		/* 
-		 * super-debug mode: only print to screen whatever
-		 * comes through the serial port.
-		 */
-
-		if (arguments.printonly) 
-		{
-			read(serial, buf, 1);
-			printf("%x\t", (int) buf[0]&0xFF);
-			fflush(stdout);
-			continue;
-		}
-
-		/* 
-		 * so let's align to the beginning of a midi command.
-		 */
+	while (run) {
 
 		int i = 1;
 
@@ -480,10 +460,6 @@ void* read_midi_from_serial_port(void* seq)
 			if (buf[i] >> 7 != 0) {
 				/* Status byte received and will always be first bit!*/
 				buf[0] = buf[i];
-					if (buf[0] == 0xFA) {
-			printf("start");
-		}
-				// printf("%x\t", buf[i]);
 				i = 1;
 	
 			} 
@@ -504,34 +480,7 @@ void* read_midi_from_serial_port(void* seq)
 			}
 
 		}
-
-	
-
-		/* print comment message (the ones that start with 0xFF 0x00 0x00 */
-		if (buf[0] == (char) 0xFF && buf[1] == (char) 0x00 && buf[2] == (char) 0x00)
-		{
-			read(serial, buf, 1);
-			msglen = buf[0];
-			if (msglen > MAX_MSG_SIZE-1) msglen = MAX_MSG_SIZE-1;
-
-			read(serial, msg, msglen);
-
-			if (arguments.silent) continue;
-
-			/* make sure the string ends with a null character */
-			msg[msglen] = 0;
-
-			puts("0xFF Non-MIDI message: ");
-			puts(msg);
-			putchar('\n');
-			fflush(stdout);
-		}
-
-		/* parse MIDI message */
-		else {
 		parse_midi_command(seq, port_out_id, buf);
-
-		}
 	}
 }
 
