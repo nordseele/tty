@@ -502,7 +502,7 @@ void* read_midi_from_serial_port(void* seq)
 
 		}
 
-		if ((buf[0]) == 0xFA) {
+		if ((buf[0] & 0xF0)) {
 			parse_midi_command(seq, port_out_id, buf);
 		}
 
