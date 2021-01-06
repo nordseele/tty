@@ -480,7 +480,7 @@ void* read_midi_from_serial_port(void* seq)
 			if (buf[i] >> 7 != 0) {
 				/* Status byte received and will always be first bit!*/
 				buf[0] = buf[i];
-		
+				printf("%x\t", buf[i]);
 				i = 1;
 			} else {
 				/* Data byte received */
