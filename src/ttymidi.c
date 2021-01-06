@@ -469,7 +469,7 @@ void* read_midi_from_serial_port(void* seq)
 					i = 3;
 				} else {
 					/* More bytes? */
-					if ((buf[0] & 0xF0) == 0xC0 || (buf[0] & 0xF0) == 0xD0) || (buf[0] & 0xF0) == 0xFA) { // pgm change and ch pressure
+					if ((buf[0] & 0xF0) == 0xC0 || (buf[0] & 0xF0) == 0xD0 || (buf[0] & 0xF0) == 0xFA) { // pgm change and ch pressure
 						i = 3;
 					} else {
 						i = 2;
