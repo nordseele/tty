@@ -1,3 +1,10 @@
+Start in verbose mode : 
+
+`ttymidi -s /dev/ttyAMA0 -b 38400 -v`
+
+Wip : MIDI Beatclock commands (Clock, start, stop, continue)
+____
+
 ttyMIDI is a GPL-licensed program that allows external serial devices to 
 interface with the ALSA sequencer.
 
@@ -19,23 +26,7 @@ access. This can be done simply by following command:
 
 	sudo make install
 
-USAGE 
-
-First, you need an external device that can send MIDI commands through the
-serial port.  To find out more about programming an external device, read the
-TTYMIDI SPECIFICATION section.  If you are using an Arduino board
-(http://www.arduino.cc), read the instructions under the arduino folder.  Once
-your device is programmed and connected to your PC's serial port, follow the
-instructions below.  
-
-To connect to ttyS0 at 2400bps:
-
-	ttymidi -s /dev/ttyS0 -b 2400
-
-To connect to ttyUSB port at default speed (115200bps) and display information
-about incoming MIDI events: 
-
-	ttymidi -s /dev/ttyUSB0 -v
+_____
 
 ttyMIDI creates an ALSA MIDI output port that can be interfaced to any
 compatible program.  This is done in the following manner:
