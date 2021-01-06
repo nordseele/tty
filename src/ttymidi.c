@@ -480,7 +480,7 @@ void* read_midi_from_serial_port(void* seq)
 			if (buf[i] >> 7 != 0) {
 				/* Status byte received and will always be first bit!*/
 				buf[0] = buf[i];
-				printf("%x\t", buf[i]);
+				// printf("%x\t", buf[i]);
 				i = 1;
 			} else {
 				/* Data byte received */
@@ -492,6 +492,8 @@ void* read_midi_from_serial_port(void* seq)
 					/* Lets figure out are we done or should we read one more byte. */
 					if ((buf[0] & 0xF0) == 0xC0 || (buf[0] & 0xF0) == 0xD0) {
 						i = 3;
+					} else if (buf[0] == 0xFA) {
+						printf("%x\t", buf[i]);
 					} else {
 						i = 2;
 					}
