@@ -483,11 +483,7 @@ void* read_midi_from_serial_port(void* seq)
 				// printf("%x\t", buf[i]);
 				i = 1;
 	
-			} 			else if ((buf[0]) == 0xFA) {
-				printf("%x \t", buf[0]);
-				i = 3;
-			}
-
+			} 
 			else {
 				/* Data byte received */
 				if (i == 2) {
@@ -504,6 +500,10 @@ void* read_midi_from_serial_port(void* seq)
 				}
 			}
 
+		}
+
+		if ((buf[0]) == 0xFA) {
+			parse_midi_command(seq, port_out_id, buf);
 		}
 
 		/* print comment message (the ones that start with 0xFF 0x00 0x00 */
