@@ -484,6 +484,7 @@ void* read_midi_from_serial_port(void* seq)
 				i = 1;
 	
 			} 			else if ((buf[0]) == 0xFA) {
+				printf("%x \t", buf[0]);
 				i = 3;
 			}
 
