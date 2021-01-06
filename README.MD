@@ -1,15 +1,20 @@
-Start in verbose mode : 
+
+### ttyMIDI
+
+Starting in verbose mode : 
 
 `ttymidi -s /dev/ttyAMA0 -b 38400 -v`
 
-Wip : MIDI Beatclock commands (Clock, start, stop, continue)
+*Wip : MIDI Beatclock commands (Clock, start, stop, continue)* 
+
+
 ____
 
 ttyMIDI is a GPL-licensed program that allows external serial devices to 
 interface with the ALSA sequencer.
 
 
-COMPILATION
+#### Compilation
 
 The ttyMIDI source code is comprised of a single C file.  To compile it, just
 run the following command:
