@@ -334,8 +334,10 @@ void write_midi_action_to_serial_port(snd_seq_t* seq_handle)
 				if (!arguments.silent && arguments.verbose) 
 					printf("Alsa    0x%x Program change     %03u %03u %03u\n", bytes[0]&0xF0, bytes[0]&0xF, bytes[1], bytes[2]); 
 				break;  
+
 			case SND_SEQ_EVENT_START: 
 				bytes[0] = 0xFA;
+				bytes[1] = 0x00;
 				if (!arguments.silent && arguments.verbose) 
 					printf("Alsa    0xFA Start		\n"); 
 				break;  
