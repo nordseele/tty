@@ -463,7 +463,7 @@ void* read_midi_from_serial_port(void* seq)
 		if (arguments.printonly) 
 		{
 			read(serial, buf, 1);
-			printf("%x\t", buf[0]&0xFF);
+			printf("%x\t", (int) buf[0]&0xFF);
 			fflush(stdout);
 			continue;
 		}
@@ -482,7 +482,12 @@ void* read_midi_from_serial_port(void* seq)
 				buf[0] = buf[i];
 				// printf("%x\t", buf[i]);
 				i = 1;
-			} else {
+				if ((buf[0] & 0xF0) == 0xFA) {
+				i = 3;
+			}
+			} 
+			
+			else {
 				/* Data byte received */
 				if (i == 2) {
 					/* It was 2nd data byte so we have a MIDI event
@@ -490,7 +495,7 @@ void* read_midi_from_serial_port(void* seq)
 					i = 3;
 				} else {
 					/* Lets figure out are we done or should we read one more byte. */
-					if ((buf[0] & 0xF0) == 0xC0 || (buf[0] & 0xF0) == 0xD0 || (buf[0] & 0xF0) == 0xFA) {
+					if ((buf[0] & 0xF0) == 0xC0 || (buf[0] & 0xF0) == 0xD0 {
 						i = 3;
 					} else {
 						i = 2;
