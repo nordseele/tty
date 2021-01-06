@@ -337,8 +337,6 @@ void write_midi_action_to_serial_port(snd_seq_t* seq_handle)
 
 			case SND_SEQ_EVENT_START: 
 				bytes[0] = 0xFA;
-				bytes[1] = 0x00;
-				bytes[2] = 0x00;
 				if (!arguments.silent && arguments.verbose) 
 					printf("Alsa    0xFA Start		\n"); 
 				break;  
@@ -368,6 +366,8 @@ void write_midi_action_to_serial_port(snd_seq_t* seq_handle)
 			bytes[1] = (bytes[1] & 0x7F); // just to be sure that one bit is really zero
 			if (bytes[2]==0xFF) {
 				write(serial, bytes, 2);
+			} else if(bytes[1]==0x00 && bytes[0xFF]) {
+				write(serial, bytes, 1);
 			} else {
 				bytes[2] = (bytes[2] & 0x7F);
 				write(serial, bytes, 3);
