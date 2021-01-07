@@ -451,7 +451,7 @@ void* read_midi_from_serial_port(void* seq)
 	while (buf[0] >> 7 == 0);
 
 	while (run) {
-
+		//  || (buf[0] & 0xF0) == 0xFA
 		int i = 1;
 
 		while (i < 3) {
@@ -469,7 +469,7 @@ void* read_midi_from_serial_port(void* seq)
 					i = 3;
 				} else {
 					/* More bytes? */
-					if ((buf[0] & 0xF0) == 0xC0 || (buf[0] & 0xF0) == 0xD0 || (buf[0] & 0xF0) == 0xFA) { // pgm change and ch pressure
+					if ((buf[0] & 0xF0) == 0xC0 || (buf[0] & 0xF0) == 0xD0) { // pgm change and ch pressure
 						i = 3;
 					} else {
 						i = 2;
