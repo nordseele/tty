@@ -266,13 +266,6 @@ void parse_midi_command(snd_seq_t* seq, int port_out_id, char *buf)
 				printf("Serial  0x%x Pitch bend         %03u %05i\n", operation, channel, param1);
 			snd_seq_ev_set_pitchbend(&ev, channel, param1 - 8192); // in alsa MIDI we want signed int
 			break;
-
-		/* Not implementing system commands (0xF0) */
-			
-		default:
-			if (!arguments.silent) 
-				printf("0x%x Unknown MIDI cmd   %03u %03u %03u\n", operation, channel, param1, param2);
-			break;
 	}
 	
 	switch(btclk) { // quick & dirty beatclock impl
@@ -300,12 +293,6 @@ void parse_midi_command(snd_seq_t* seq, int port_out_id, char *buf)
 				printf("Serial  0xFC Continue    \n");
 			//snd_seq_ev_set_queue_continue(&ev, 0);
 			break;
-
-		default:
-			if (!arguments.silent) 
-				printf("0x%x Unknown MIDI cmd   %03u %03u %03u\n", operation, channel, param1, param2);
-			break;
-
 	}
 
 	snd_seq_event_output_direct(seq, &ev);
