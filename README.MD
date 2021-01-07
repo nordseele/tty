@@ -1,14 +1,19 @@
 
 ### ttyMIDI
 
-Starting in verbose mode : 
+
+##### Nordseele notes 
+
+Starting ttymidi in verbose mode : 
 
 `ttymidi -s /dev/ttyAMA0 -b 38400 -v`
 
-*Wip : Trying to add MIDI Beatclock commands (Clock, start, stop, continue)* 
-
+This version adds MIDI one bytes Beatclock commands (Clock, start, stop, continue) 
+Needs a complete refactoring but seems to work.
 
 ____
+
+###### Original readme 
 
 ttyMIDI is a GPL-licensed program that allows external serial devices to 
 interface with the ALSA sequencer.
@@ -26,7 +31,7 @@ run the following command:
 This program depends on libasound2, so you should have the development headers
 for that installed. In Debian or Ubuntu, you can install it by running:
 
-	apt-get install libasound2-dev
+	sudo apt-get install libasound2-dev
 
 After you compile ttyMIDI, you may wish to copy it to /usr/bin for easy
 access. This can be done simply by following command:
