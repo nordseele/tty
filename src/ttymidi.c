@@ -461,7 +461,7 @@ void* read_midi_from_serial_port(void* seq)
 				/* Status byte received */
 				buf[0] = buf[i];
 
-				if (buf[0] == 0xFA || buf[0] == 0xFB || buf[0] == 0x8 || buf[0] == 0xFC) {
+				if (buf[0] == 0xFA || buf[0] == 0xFB || buf[0] == 0xF8 || buf[0] == 0xFC) {
 					i = 3;
 				} else {
 					i = 1;
