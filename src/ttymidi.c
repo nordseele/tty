@@ -214,9 +214,10 @@ void parse_midi_command(snd_seq_t* seq, int port_out_id, char *buf)
 	snd_seq_ev_set_source(&ev, port_out_id);
 	snd_seq_ev_set_subs(&ev);
 
-	int operation, channel, param1, param2;
+	int operation, channel, param1, param2, btclk;
 
 	operation = buf[0] & 0xF0;
+	btclk     = buf[0];
 	channel   = buf[0] & 0x0F;
 	param1    = buf[1];
 	param2    = buf[2];
@@ -253,6 +254,29 @@ void parse_midi_command(snd_seq_t* seq, int port_out_id, char *buf)
 			snd_seq_ev_set_pgmchange(&ev, channel, param1);
 			break;
 
+		case 0xD0:
+			if (!arguments.silent && arguments.verbose) 
+				printf("Serial  0x%x Channel change     %03u %03u\n", operation, channel, param1);
+			snd_seq_ev_set_chanpress(&ev, channel, param1);
+			break;
+
+		case 0xE0:
+			param1 = (param1 & 0x7F) + ((param2 & 0x7F) << 7);
+			if (!arguments.silent && arguments.verbose) 
+				printf("Serial  0x%x Pitch bend         %03u %05i\n", operation, channel, param1);
+			snd_seq_ev_set_pitchbend(&ev, channel, param1 - 8192); // in alsa MIDI we want signed int
+			break;
+
+		/* Not implementing system commands (0xF0) */
+			
+		default:
+			if (!arguments.silent) 
+				printf("0x%x Unknown MIDI cmd   %03u %03u %03u\n", operation, channel, param1, param2);
+			break;
+	}
+	
+	switch(btclk) { // quick & dirty beatclock impl
+
 		case 0xFA:
 			if (!arguments.silent && arguments.verbose) 
 				printf("Serial  0xFA Start    \n");
@@ -277,25 +301,11 @@ void parse_midi_command(snd_seq_t* seq, int port_out_id, char *buf)
 			//snd_seq_ev_set_queue_continue(&ev, 0);
 			break;
 
-		case 0xD0:
-			if (!arguments.silent && arguments.verbose) 
-				printf("Serial  0x%x Channel change     %03u %03u\n", operation, channel, param1);
-			snd_seq_ev_set_chanpress(&ev, channel, param1);
-			break;
-
-		case 0xE0:
-			param1 = (param1 & 0x7F) + ((param2 & 0x7F) << 7);
-			if (!arguments.silent && arguments.verbose) 
-				printf("Serial  0x%x Pitch bend         %03u %05i\n", operation, channel, param1);
-			snd_seq_ev_set_pitchbend(&ev, channel, param1 - 8192); // in alsa MIDI we want signed int
-			break;
-
-		/* Not implementing system commands (0xF0) */
-			
 		default:
 			if (!arguments.silent) 
 				printf("0x%x Unknown MIDI cmd   %03u %03u %03u\n", operation, channel, param1, param2);
 			break;
+
 	}
 
 	snd_seq_event_output_direct(seq, &ev);
@@ -461,7 +471,7 @@ void* read_midi_from_serial_port(void* seq)
 				/* Status byte received */
 				buf[0] = buf[i];
 
-				if (buf[0] == 0xFA || buf[0] == 0xFB || buf[0] == 0xF8 || buf[0] == 0xFC) {
+				if (buf[0] == 0xFA || buf[0] == 0xFB || buf[0] == 0xF8 || buf[0] == 0xFC) { // dirty test if buf[0] is a one byte beatclock msg
 					i = 3;
 				} else {
 					i = 1;
