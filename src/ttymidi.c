@@ -451,7 +451,7 @@ void* read_midi_from_serial_port(void* seq)
 	while (buf[0] >> 7 == 0);
 
 	while (run) {
-		//  || (buf[0] & 0xF0) == 0xFA
+		
 		int i = 1;
 
 		while (i < 3) {
@@ -460,8 +460,12 @@ void* read_midi_from_serial_port(void* seq)
 			if (buf[i] >> 7 != 0) {
 				/* Status byte received */
 				buf[0] = buf[i];
-				i = 1;
-	
+
+				if (buf[0] == 0xFA) {
+					i = 3;
+				} else {
+					i = 1;
+				}
 			} 
 			else {
 				/* Data byte received */
